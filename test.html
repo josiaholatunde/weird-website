@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broken Colorful Website</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+
+        }
+
+        .broken-text {
+            font-size: 20px;
+            color: #ff00ff;
+            background-color: #00ff00;
+            border: 2px none #0000ff;
+            padding: 10px;
+            margin: 10px 0;
+            transform: rotate(-10deg);
+        }
+
+        .more-broken-text {
+            font-size: 18px;
+            color: #00ffff;
+            background-color: #ff0000;
+            border: 3px none #0000ff;
+            padding: 15px;
+            margin: 95px 15px;
+            transform: rotate(15deg);
+            text-align: center;
+        }
+
+        .raindrop {
+            position: absolute;
+            width: 2px;
+            height: 15px;
+            background-color: #0af;
+            opacity: 0.5;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+    <h1 class="broken-text">Why don't skeletons fight each other ?</h1>
+    <p class="more-broken-text">  They don't have the guts.!</p>
+    <div id="explosion-container" onclick="createExplosion(event)"></div>
+    <script>
+        function changeBackgroundColor() {
+            // const colors = ['#FF69B4', '#8A2BE2', '#00FF7F', '#FFD700', '#FF4500', '#00FFFF'];
+            const colors = ['yellow', 'blue', ''];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.backgroundColor = randomColor;
+        }
+
+        function createRaindrop() {
+            const raindrop = document.createElement('div');
+            raindrop.classList.add('raindrop');
+            raindrop.style.left = `${Math.random() * window.innerWidth}px`;
+            raindrop.style.animation = `fall ${Math.random() * 2 + 1}s linear infinite`;
+            document.body.appendChild(raindrop);
+
+            // Set a timeout to remove the raindrop after it falls to avoid overloading the DOM
+            setTimeout(() => {
+                raindrop.remove();
+            }, 2000);
+        }
+
+
+
+        function createExplosion(event) {
+            const explosionContainer = document.getElementById('explosion-container');
+            const explosion = document.createElement('div');
+            explosion.classList.add('explosion');
+            explosion.style.left = `${ event.clientX } px`;
+            explosion.style.top = `${ event.clientY } px`;
+            explosion.style.backgroundColor = 'rgba(255, 165, 0, 0.5)'; // Semi-transparent orange
+            explosion.style.width = explosion.style.height = '0px';
+
+            explosionContainer.appendChild(explosion);
+
+            // Animate explosion
+            setTimeout(() => {
+                explosion.style.width = explosion.style.height = '200px';
+                explosion.style.marginLeft = explosion.style.marginTop = '-100px';
+                explosion.style.backgroundColor = 'rgba(255, 69, 0, 0)';
+            }, 0);
+
+            // Create particles
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = `${event.clientX}px`;
+                particle.style.top = `${event.clientY}px`;
+
+                const x = (Math.random() - 0.5) * 200; // Random direction
+                const y = (Math.random() - 0.5) * 200; // Random direction
+
+                explosionContainer.appendChild(particle);
+
+                // Animate particles
+                setTimeout(() => {
+                    particle.style.transform = `translate(${x}px, ${y}px)`;
+                    particle.style.opacity = '0';
+                }, 0);
+            }
+
+            // Cleanup
+            setTimeout(() => {
+                explosion.remove();
+                document.querySelectorAll('.particle').forEach(p => p.remove());
+            }, 1000);
+        }
+        // CSS for raindrop animation
+        document.head.appendChild(document.createElement("style")).textContent =
+            `@keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }`
+            ;
+        setInterval(changeBackgroundColor, 2000);
+        // Create a new raindrop every 100 milliseconds
+        setInterval(createRaindrop, 100);
+    </script>
+
+</body>
+
+</html>
