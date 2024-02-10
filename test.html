@@ -45,6 +45,18 @@
             opacity: 0.5;
         }
 
+        .escapeContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #escapeButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         
     </style>
 </head>
@@ -54,6 +66,9 @@
     <h1 class="broken-text">Why don't skeletons fight each other ?</h1>
     <p class="more-broken-text">  They don't have the guts.!</p>
     <div id="explosion-container" onclick="createExplosion(event)"></div>
+    <div class="escapeContainer">
+        <button id="escapeButton">Save Twitter!</button>
+    </div>
     <script>
         function changeBackgroundColor() {
             // const colors = ['#FF69B4', '#8A2BE2', '#00FF7F', '#FFD700', '#FF4500', '#00FFFF'];
@@ -131,6 +146,14 @@
         setInterval(changeBackgroundColor, 2000);
         // Create a new raindrop every 100 milliseconds
         setInterval(createRaindrop, 100);
+
+        const escapeButton = document.getElementById('escapeButton');
+
+        escapeButton.addEventListener('mouseover', () => {
+            const newX = Math.random() * (window.innerWidth - escapeButton.clientWidth);
+            const newY = Math.random() * (window.innerHeight - escapeButton.clientHeight);
+            escapeButton.style.transform = `translate(${newX}px, ${newY}px)`;
+        });
     </script>
 
 </body>
